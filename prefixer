@@ -5,27 +5,13 @@ BINFOLDER=$CURRENTFOLDER"/bin/"
 MAINJAVA=$CURRENTFOLDER"/src/tv/justin/problems/Prefixer.java"
 PARENJAVA=$CURRENTFOLDER"/src/tv/justin/problems/Parentheser.java"
 MAINCLASS=$CURRENTFOLDER"/bin/tv/justin/problems/Prefixer.class"
-SYSTEM=`uname -s`
 
-if [ -d $BINFOLDER ];
+if [ ! -d $BINFOLDER ];
 then
-	if [ $SYSTEM = "Linux" ];
-	then
-		lastModificationJava=`stat -c %Y $MAINJAVA`
-		lastModificationClass=`stat -c %Y $MAINCLASS`
-	else
-		lastModificationJava=`stat -f %Z $MAINJAVA`
-		lastModificationClass=`stat -f %Z $MAINCLASS`
-	fi
-	if [ $lastModificationClass -lt $lastModificationJava ];
-    then
-        echo "Compilation is running..."
-        javac -d $BINFOLDER $MAINJAVA $PARENJAVA
-        echo "Compile finished."
-	fi
-else
    mkdir $BINFOLDER
+   echo "Compilation running..."
    javac -d $BINFOLDER $MAINJAVA $PARENJAVA
+   echo "Compilation finished."
 fi
 
 java -classpath $BINFOLDER tv.justin.problems.Prefixer $*
