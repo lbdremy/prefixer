@@ -1,0 +1,20 @@
+#!/bin/bash
+
+CURRENTFOLDER=`pwd`
+BINFOLDER=$CURRENTFOLDER"/bin/"
+MAINJAVA=$CURRENTFOLDER"/src/tv/justin/problems/Prefixer.java"
+PARENJAVA=$CURRENTFOLDER"/src/tv/justin/problems/Parentheser.java"
+MAINCLASS=$CURRENTFOLDER"/bin/tv/justin/problems/Prefixer.class"
+
+lastModificationJava=`stat -c %Y $MAINJAVA`
+lastModificationClass=`stat -c %Y $MAINCLASS`
+
+if [ $lastModificationClass -lt $lastModificationJava ]
+    then
+        echo "Compilation is running..."
+        javac -d $BINFOLDER $MAINJAVA $PARENJAVA
+        echo "Compile finished."
+fi
+
+java -classpath $BINFOLDER tv.justin.problems.Prefixer $*
+
