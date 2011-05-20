@@ -15,7 +15,7 @@ then
 		lastModificationClass=`stat -c %Y $MAINCLASS`
 	else
 		lastModificationJava=`stat -f %Z $MAINJAVA`
-		lastModificationClass=`stat -c %Z $MAINCLASS`
+		lastModificationClass=`stat -f %Z $MAINCLASS`
 	fi
 	if [ $lastModificationClass -lt $lastModificationJava ];
     then
