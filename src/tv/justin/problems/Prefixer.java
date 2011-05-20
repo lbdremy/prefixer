@@ -133,18 +133,14 @@ public class Prefixer {
 		while(!stackOperand.isEmpty()){
 			prefixExpression =   prefixExpression.append(stackOperand.pop());
 		}
-		String[] tabExpression = prefixExpression.toString().split("\\ ");
-		prefixExpression.delete(0, prefixExpression.length());
-		for(int i=tabExpression.length - 1; i >= 0 ; i--){
-			prefixExpression.append(tabExpression[i]+ " ");
-		}
-		return prefixExpression.toString();
+		
+		return prefixExpression.reverse().toString();
 	}
 	
 	private static String calcul(String operand1, String operand2, char operator){
 		try{
-			float i1 = Float.parseFloat(operand1);
-			float i2 = Float.parseFloat(operand2);
+			float i1 = Float.parseFloat(new StringBuffer(operand1).reverse().toString());
+			float i2 = Float.parseFloat(new StringBuffer(operand2).reverse().toString());
 			float result = 0;
 			if( operator == '*'){
 				result = i1 * i2;
@@ -155,7 +151,7 @@ public class Prefixer {
 			}else{
 				result = i1 - i2;
 			}
-			return String.valueOf(result)+" ";
+			return new StringBuffer(String.valueOf(result)).reverse().toString()+" ";
 		}catch(NumberFormatException e){
 			return " " +operand1 + " "+ operand2 + " "+ operator;
 		}
