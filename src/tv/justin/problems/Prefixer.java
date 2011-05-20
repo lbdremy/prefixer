@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Stack;
 
 public class Prefixer {
@@ -26,7 +28,6 @@ public class Prefixer {
 			String path =  args[args.length - 1];
 		    String expression = readFile(path);
 		    if(expression!= null && !expression.isEmpty()){
-			    //Algorithm here
 		    	expression = expression.replaceAll("\\ ", "");
 		    	String prefixExpression = toPrefixExpression(expression);
 		    	if(flag){
@@ -69,7 +70,7 @@ public class Prefixer {
 				}
 			}
 			if(!operand.isEmpty()){
-				prefixExpression.append(operand);
+				prefixExpression.append(" ").append(operand);
 			}
 			if(!isOperand(token)){
 				if(isBacketOpen(token)){
@@ -100,8 +101,65 @@ public class Prefixer {
 		return prefixExpression.toString();
 	}
 	
-	private static String toReduceExpression(String expression){
-		return expression;
+	private static String toReduceExpression(String exp){
+		Stack<String> stackOperand = new Stack<String>();
+		StringBuffer expression = new StringBuffer(exp).reverse();
+		StringBuffer prefixExpression = new StringBuffer();
+		int index = 0;
+		int lenght = expression.length();
+		char token ;
+		while(index < lenght){
+			token = expression.charAt(index);
+			String operand ="";
+			while(isOperand(token)){
+				operand += String.valueOf(token);
+				if(index + 1 < lenght){
+					token = expression.charAt(++index);
+				}else{
+					break;
+				}
+			}
+			if(!operand.isEmpty()){
+				stackOperand.push(operand);
+			}
+			if(isOperator(token)){
+				String operand1 = stackOperand.pop().trim();
+				String operand2 = stackOperand.pop().trim();
+				stackOperand.push(calcul(operand1,operand2,token));
+			}
+			index++;
+		}
+		
+		while(!stackOperand.isEmpty()){
+			prefixExpression =   prefixExpression.append(stackOperand.pop());
+		}
+		String[] tabExpression = prefixExpression.toString().split("\\ ");
+		prefixExpression.delete(0, prefixExpression.length());
+		for(int i=tabExpression.length - 1; i >= 0 ; i--){
+			prefixExpression.append(tabExpression[i]+ " ");
+		}
+		return prefixExpression.toString();
+	}
+	
+	private static String calcul(String operand1, String operand2, char operator){
+		try{
+			float i1 = Float.parseFloat(operand1);
+			float i2 = Float.parseFloat(operand2);
+			float result = 0;
+			if( operator == '*'){
+				result = i1 * i2;
+			}else if(operator == '/' ){
+				result = i1 / i2;
+			}else if(operator == '+' ){
+				result = i1 + i2;
+			}else{
+				result = i1 - i2;
+			}
+			return String.valueOf(result)+" ";
+		}catch(NumberFormatException e){
+			return " " +operand1 + " "+ operand2 + " "+ operator;
+		}
+
 	}
 	private static int getPriority(char operator){
 		//Bracket Open -> Bracket Close -> Division -> Multiplication -> Addition -> Subtraction
@@ -135,6 +193,13 @@ public class Prefixer {
 			priority = 1;
 		}
 		return priority;
+	}
+	
+	private static boolean isOperator(char operator){
+		if(isOperatorStrong(operator)||isOperatorWeak(operator)){
+			return true;
+		}
+		return false;
 	}
 	
 	private static boolean isOperatorStrong(char operator){
@@ -186,8 +251,14 @@ public class Prefixer {
 		return false;
 	}
 	
-	private static boolean isOperand(char operant){
-		if(!isBacketClose(operant)&&!isBacketOpen(operant)&&!isOperatorStrong(operant)&&!isOperatorWeak(operant)){
+	private static boolean isSpace(char operator){
+		if(operator == ' '){
+			return true;
+		}
+		return false;
+	}
+	private static boolean isOperand(char operand){
+		if(!isSpace(operand)&&!isBacketClose(operand)&&!isBacketOpen(operand)&&!isOperatorStrong(operand)&&!isOperatorWeak(operand)){
 			return true;
 		}
 		return false;

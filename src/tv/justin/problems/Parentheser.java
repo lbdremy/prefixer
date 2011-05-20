@@ -20,8 +20,14 @@ public class Parentheser {
 						index++;
 						newExpression.append(nestedParentheses());
 						numberOperant++;
-					}else{
-						newExpression.append(token);
+					}else if(!isSpace(token)){
+						while(index < lenght && !isSpace(token) && !isOperator(token)){
+							newExpression.append(token);
+							index++;
+							if(index < lenght){
+								token = expression.charAt(index);
+							}
+						}
 						numberOperant++;
 					}
 					
@@ -46,8 +52,15 @@ public class Parentheser {
 					index++;
 					newExpression.append(nestedParentheses());
 					numberOperant++;
-				}else{
-					newExpression.append(" ").append(token);
+				}else if(!isSpace(token)){
+					newExpression.append(" ");
+					while(index < lenght && !isSpace(token) && !isOperator(token)){
+						newExpression.append(token);
+						index++;
+						if(index < lenght){
+							token = expression.charAt(index);
+						}
+					}
 					numberOperant++;
 				}
 				
@@ -63,6 +76,13 @@ public class Parentheser {
 	public String getExpressionParenthese() {
 		expressionParenthese = putParentheses();
 		return expressionParenthese;
+	}
+	
+	private static boolean isSpace(char operator){
+		if(operator == ' '){
+			return true;
+		}
+		return false;
 	}
 	
 	private static boolean isOperator(char operator){
