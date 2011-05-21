@@ -1,4 +1,4 @@
-Convert prefix arithmetic expression to infix expression.
+Convert infix arithmetic expression to prefix expression.
 Take account of these symbols: ( ) / * + - and respect operator precedence.
 All values are either single alphabetic characters or positive integers.
 
