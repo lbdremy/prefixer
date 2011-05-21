@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Prefixer {
 
@@ -35,6 +37,7 @@ public class Prefixer {
 		    	prefixExpression = parentheser.putParentheses(prefixExpression);
 		    	long stopTime = System.currentTimeMillis();
 			    long elapsedTime = stopTime - startTime;
+			    prefixExpression = prefixExpression.replace("#", "-");
 			    System.out.println(expression+" becomes "+ prefixExpression);
 			    System.out.println("Executed in "+elapsedTime+"ms");
 		    }else if(expression.isEmpty()){
@@ -138,9 +141,10 @@ public class Prefixer {
 	}
 	
 	private static String calcul(String operand1, String operand2, char operator){
-		try{
-			float i1 = Float.parseFloat(new StringBuffer(operand1).reverse().toString());
-			float i2 = Float.parseFloat(new StringBuffer(operand2).reverse().toString());
+		if(isNumeric(operand1)&&isNumeric(operand2)){
+			//Replace # by - IMPORTANT
+			float i1 = Float.parseFloat(new StringBuffer(operand1.replace("#", "-")).reverse().toString());
+			float i2 = Float.parseFloat(new StringBuffer(operand2.replace("#", "-")).reverse().toString());
 			float result = 0;
 			if( operator == '*'){
 				result = i1 * i2;
@@ -151,12 +155,21 @@ public class Prefixer {
 			}else{
 				result = i1 - i2;
 			}
-			return new StringBuffer(String.valueOf(result)).reverse().toString()+" ";
-		}catch(NumberFormatException e){
+			return new StringBuffer(String.valueOf(result).replace("-", "#")).reverse().toString()+" ";
+			//Catch the exception or use regex for determined if operand can be convert to Float ? I prefer regex
+			//catch(NumberFormatException e)
+		}else{
 			return " " +operand1 + " "+ operand2 + " "+ operator;
 		}
-
 	}
+	
+	private static final Pattern patternNumeric= Pattern.compile("[0-9]{1,}[\\.]{0,1}[0-9]{0,}[\\#]{0,1}");
+	
+	private static boolean isNumeric(String operand){
+		Matcher m = patternNumeric.matcher(operand);
+		return m.matches();
+	}
+	
 	private static int getPriority(char operator){
 		//Bracket Open -> Bracket Close -> Division -> Multiplication -> Addition -> Subtraction
 		int priority = 0;
