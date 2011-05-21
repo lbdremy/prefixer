@@ -31,8 +31,8 @@ public class Prefixer {
 		    	if(flag){
 		    		prefixExpression = toReduceExpression(prefixExpression);
 		    	}
-		    	Parentheser parentheser = new Parentheser(prefixExpression);
-		    	prefixExpression = parentheser.getExpressionParenthese();
+		    	Parentheser parentheser = Parentheser.getInstance();
+		    	prefixExpression = parentheser.putParentheses(prefixExpression);
 		    	long stopTime = System.currentTimeMillis();
 			    long elapsedTime = stopTime - startTime;
 			    System.out.println(expression+" becomes "+ prefixExpression);
@@ -132,7 +132,9 @@ public class Prefixer {
 			prefixExpression =   prefixExpression.append(stackOperand.pop());
 		}
 		
-		return prefixExpression.reverse().toString();
+		prefixExpression = prefixExpression.reverse();
+		
+		return prefixExpression.toString();
 	}
 	
 	private static String calcul(String operand1, String operand2, char operator){

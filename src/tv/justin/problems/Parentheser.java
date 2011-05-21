@@ -2,13 +2,22 @@ package tv.justin.problems;
 
 public class Parentheser {
 	
-	private String expressionParenthese;
 	private int index = 0;
 	private StringBuffer expression;
-	public Parentheser(String expression){
-		this.expression = new StringBuffer(expression);
+	
+	private static Parentheser singleton= null;
+	
+	private Parentheser(){}
+	
+	public static Parentheser getInstance(){
+		if(singleton == null){
+			singleton = new Parentheser();
+		}
+		return singleton;
 	}
-	private String putParentheses(){
+	
+	public String putParentheses(String expression){
+			this.expression = new StringBuffer(expression);
 			int lenght = expression.length();
 			char token ;
 			int numberOperant = 0;
@@ -73,10 +82,6 @@ public class Parentheser {
 		return newExpression;
 	}
 
-	public String getExpressionParenthese() {
-		expressionParenthese = putParentheses();
-		return expressionParenthese;
-	}
 	
 	private static boolean isSpace(char operator){
 		if(operator == ' '){
