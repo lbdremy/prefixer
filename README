@@ -1,14 +1,18 @@
 Convert infix arithmetic expression to prefix expression.
 Take account of these symbols: ( ) / * + - and respect operator precedence.
 All values are either single alphabetic characters or positive integers.
-
+DON'T USE THE SPECIAL SYMBOL # BECAUSE THE PROGRAM USE IT.
 
 Usage: ./prefixer [OPTION] SOURCE
 
 [OPTION] not mandatory:
 -r : Reduce the expression as much as possible before the output.
 
-Example:
+Examples:
 >./prefixer folder/expression
 (3+v)/9*2+3 becomes (+ 3(* 2(/ 9(+ v 3))))
 
+>./prefixer -r folder/expression
+(3+2)/9*t+3 becomes (+ 3(* t 0.5555556))
+
+Author: Remy Loubradou
