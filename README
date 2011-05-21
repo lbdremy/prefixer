@@ -1,0 +1,14 @@
+Convert prefix arithmetic expression to infix expression.
+Take account of these symbols: ( ) / * + - and respect operator precedence.
+All values are either single alphabetic characters or positive integers.
+
+
+Usage: ./prefixer [OPTION] SOURCE
+
+[OPTION] not mandatory:
+-r : Reduce the expression as much as possible before the output.
+
+Example:
+>./prefix folder/expression
+(3+v)/9*2+3 becomes (+ 3(* 2(/ 9(+ v 3))))
+
