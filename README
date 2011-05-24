@@ -1,7 +1,7 @@
 Convert infix arithmetic expression to prefix expression.
 Take account of these symbols: ( ) / * + - and respect operator precedence.
 All values are either single alphabetic characters or positive integers.
-DON'T USE THE SPECIAL SYMBOL # BECAUSE THE PROGRAM USE IT.
+
 
 Usage: ./prefixer [OPTION] SOURCE
 
